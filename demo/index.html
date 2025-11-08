@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGS-2.0 - Demo</title>
+    <meta name="description" content="Eine Live-Demonstration des modernisierten Golden Grid Systems (GGS-2.0) mit CSS Grid.">
+
+    <!-- 1. Lade das GGS-2.0 Grid System -->
+    <link rel="stylesheet" href="../GGS-2.0.css">
+
+    <!-- 2. Lade die Stile nur für diese Demo-Seite -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="demo-header">
+        <div class="ggs-container">
+            <div class="ggs-col ggs-col-span-16">
+                <h1>Golden Grid System 2.0</h1>
+                <p>Eine moderne Implementierung mit CSS Grid. Verkleinern Sie das Browserfenster, um die responsive Anpassung zu sehen.</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Beispiel 1: Volle Breite -->
+        <div class="ggs-container">
+            <div class="ggs-col ggs-col-span-16">
+                <div class="demo-block">
+                    <h3>16 Spalten</h3>
+                    <p>Ein Element, das die gesamte verfügbare Breite einnimmt.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beispiel 2: Zwei Hälften -->
+        <div class="ggs-container">
+            <div class="ggs-col ggs-col-span-8">
+                <div class="demo-block">
+                    <h3>8 Spalten</h3>
+                    <p>Erste Hälfte des Grids.</p>
+                </div>
+            </div>
+            <div class="ggs-col ggs-col-span-8">
+                <div class="demo-block">
+                    <h3>8 Spalten</h3>
+                    <p>Zweite Hälfte des Grids.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beispiel 3: Vier Viertel -->
+        <div class="ggs-container">
+            <div class="ggs-col ggs-col-span-4">
+                <div class="demo-block">
+                    <h4>4 Spalten</h4>
+                </div>
+            </div>
+            <div class="ggs-col ggs-col-span-4">
+                <div class="demo-block">
+                    <h4>4 Spalten</h4>
+                </div>
+            </div>
+            <div class="ggs-col ggs-col-span-4">
+                <div class="demo-block">
+                    <h4>4 Spalten</h4>
+                </div>
+            </div>
+            <div class="ggs-col ggs-col-span-4">
+                <div class="demo-block">
+                    <h4>4 Spalten</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beispiel 4: Gemischtes Layout -->
+        <div class="ggs-container">
+             <div class="ggs-col ggs-col-span-4">
+                <div class="demo-block">
+                    <h4>4 Spalten</h4>
+                    <p>Ein kleineres Element am Anfang.</p>
+                </div>
+            </div>
+            <div class="ggs-col ggs-col-span-12">
+                <div class="demo-block">
+                    <h3>12 Spalten</h3>
+                    <p>Ein größeres Element, das den Rest des Raumes füllt.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Beispiel 5: Offset (Einrückung) -->
+        <div class="ggs-container">
+            <div class="ggs-col ggs-col-start-5 ggs-col-span-8">
+                <div class="demo-block demo-block-highlight">
+                    <h3>8 Spalten mit Offset</h3>
+                    <p>Dieses Element beginnt bei der 5. Spalte (<code>ggs-col-start-5</code>) und ist zentriert.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="demo-footer">
+        <div class="ggs-container">
+            <div class="ggs-col ggs-col-span-16">
+                <p>GGS-2.0 Demo</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* GGS-2.0 Configuration */
+:root {
+  --ggs-column-count: 16;
+  --ggs-margin-columns: 1; /* Eine Spalte für jeden Rand */
+  
+  /* Gesamte Spaltenzahl für das Grid-Layout */
+  --ggs-total-columns: calc(var(--ggs-column-count) + (var(--ggs-margin-columns) * 2));
+
+  /* Gutter (Spaltenabstand) */
+  --ggs-gutter-width: 1.5rem; /* 24px bei 16px Basisschriftgröße */
+
+  /* Farben für das optionale Grid-Overlay (Gridlet) */
+  --ggs-overlay-color: rgba(255, 195, 0, 0.5);
+}
+
+.ggs-container {
+  display: grid;
+  
+  /* Erstellt 18 Spalten (1 Rand + 16 Inhalt + 1 Rand) */
+  grid-template-columns: 
+    repeat(var(--ggs-total-columns), 1fr);
+  
+  /* Definiert den Abstand zwischen den Spalten */
+  gap: var(--ggs-gutter-width);
+
+  /* Die seitlichen Ränder werden durch das Grid selbst erzeugt */
+  /* Kein zusätzliches 'margin' mehr nötig */
+  width: 100%;
+  padding: 0 var(--ggs-gutter-width);
+  box-sizing: border-box;
+}
+
+/* Basis für alle Spalten-Elemente */
+.ggs-col {
+  /* Die erste Spalte des Grids ist der linke Rand, also beginnen Inhalte bei Spalte 2 */
+  grid-column-start: calc(var(--ggs-margin-columns) + 1);
+  grid-column-end: span 1; /* Standard: 1 Spalte breit */
+}
+
+/* Hilfsklassen für unterschiedliche Breiten */
+.ggs-col-span-1 { grid-column-end: span 1; }
+.ggs-col-span-2 { grid-column-end: span 2; }
+.ggs-col-span-4 { grid-column-end: span 4; }
+.ggs-col-span-8 { grid-column-end: span 8; }
+.ggs-col-span-16 { grid-column-end: span 16; }
+
+/* Hilfsklassen für Startposition (Offset) */
+.ggs-col-start-1 { grid-column-start: calc(var(--ggs-margin-columns) + 1); }
+.ggs-col-start-5 { grid-column-start: calc(var(--ggs-margin-columns) + 5); }
+.ggs-col-start-9 { grid-column-start: calc(var(--ggs-margin-columns) + 9); }
+
+/* Für mittlere Bildschirme (Tablet): 8-Spalten-Logik */
+@media (max-width: 1024px) {
+  :root {
+    /* Gutter anpassen, falls gewünscht */
+    --ggs-gutter-width: 1rem;
+  }
+  
+  .ggs-container {
+    /* Ändere das Grid auf 8 Inhaltsspalten + 2 Ränder */
+    grid-template-columns: repeat(10, 1fr);
+  }
+
+  /* Elemente, die vorher 16 Spalten hatten, nehmen jetzt 8 ein */
+  .ggs-col-span-16 { grid-column-end: span 8; }
+  /* Beispiel: Ein 8-Spalten-Element wird zu einem 4-Spalten-Element */
+  .ggs-col-span-8 { grid-column-end: span 4; }
+}
+
+/* Für kleine Bildschirme (Mobile): 1-Spalten-Layout */
+@media (max-width: 640px) {
+  .ggs-container {
+    /* Kein mehrspaltiges Grid, nur ein Block-Layout */
+    display: block;
+  }
+
+  /* Alle Spaltenelemente verhalten sich wie normale Blockelemente */
+  .ggs-col {
+    grid-column-start: auto;
+    grid-column-end: auto;
+  }
+}

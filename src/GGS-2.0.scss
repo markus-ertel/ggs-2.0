@@ -1,0 +1,144 @@
+/*
+ * Golden Grid System 2.0 (GGS-2.0)
+ *
+ * Eine moderne Neuinterpretation des Golden Grid Systems, umgesetzt mit CSS Grid.
+ *
+ * Original-Code: Copyright (c) 2011 Joni Korpi
+ * GGS-2.0 Modifikationen: Copyright (c) 2025 [Ihr Name]
+ * Lizenziert unter MIT.
+ */
+
+
+//-----------------------------------------------------------------------
+// 1. KONFIGURATION
+//-----------------------------------------------------------------------
+//
+// Diese SCSS-Variablen legen die Standardwerte fest. Sie können vor dem
+// Importieren dieser Datei überschrieben werden (`!default`).
+// Sie werden auch verwendet, um die CSS Custom Properties zu initialisieren.
+//
+
+// Das Kernraster: 16 Inhaltsspalten
+$ggs-column-count: 16 !default;
+
+// Die Randspalten: 1 auf jeder Seite
+$ggs-margin-columns: 1 !default;
+
+// Gesamtanzahl der Grid-Tracks
+$ggs-total-columns: $ggs-column-count + ($ggs-margin-columns * 2);
+
+// Spaltenabstand (Gutter)
+$ggs-gutter-width: 1.5rem !default; // 24px bei 16px Basisschrift
+
+// Responsive Breakpoints
+$ggs-breakpoint-tablet: 1024px !default;
+$ggs-breakpoint-mobile: 640px !default;
+
+
+//-----------------------------------------------------------------------
+// 2. CSS CUSTOM PROPERTIES (CSS-VARIABLEN)
+//-----------------------------------------------------------------------
+//
+// Initialisiert die CSS-Variablen, die das Grid zur Laufzeit steuern.
+// Dies ermöglicht maximale Flexibilität.
+//
+:root {
+  --ggs-column-count: #{$ggs-column-count};
+  --ggs-margin-columns: #{$ggs-margin-columns};
+  --ggs-total-columns: #{$ggs-total-columns};
+  --ggs-gutter-width: #{$ggs-gutter-width};
+}
+
+
+//-----------------------------------------------------------------------
+// 3. GRID-CONTAINER
+//-----------------------------------------------------------------------
+//
+// Die Hauptklasse, die das Grid-Layout definiert.
+//
+.ggs-container {
+  display: grid;
+  grid-template-columns: repeat(var(--ggs-total-columns), 1fr);
+  gap: var(--ggs-gutter-width);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+//-----------------------------------------------------------------------
+// 4. GRID-SPALTEN (COLUMNS)
+//-----------------------------------------------------------------------
+//
+// Klassen, um die Breite (span) und Position (start) von Elementen
+// innerhalb des Grids zu steuern.
+//
+
+// Basisklasse für jedes Grid-Element
+.ggs-col {
+  // Standardmäßig beginnt jedes Element nach der linken Randspalte.
+  // Dies kann durch eine `.ggs-col-start-*`-Klasse überschrieben werden.
+  grid-column-start: $ggs-margin-columns + 1;
+
+  // Standardmäßig erstreckt sich ein Element über eine Spalte.
+  // Dies wird typischerweise durch eine `.ggs-col-span-*`-Klasse überschrieben.
+  grid-column-end: span 1;
+}
+
+// Generiert dynamisch die Klassen für die Spaltenbreite.
+// Beispiel: .ggs-col-span-8
+@for $i from 1 through $ggs-column-count {
+  .ggs-col-span-#{$i} {
+    grid-column-end: span $i;
+  }
+}
+
+// Generiert dynamisch die Klassen für die Startposition.
+// Beispiel: .ggs-col-start-5
+@for $i from 1 through $ggs-column-count {
+  .ggs-col-start-#{$i} {
+    // Die Startlinie berücksichtigt die linke Randspalte.
+    grid-column-start: $i + $ggs-margin-columns;
+  }
+}
+
+
+//-----------------------------------------------------------------------
+// 5. RESPONSIVE ANPASSUNGEN
+//-----------------------------------------------------------------------
+
+// --- Tablet-Ansicht (z.B. 8-Spalten-Logik) ---
+// Hier definieren wir spezifische Überschreibungen für mittlere Bildschirmgrößen.
+// Anstatt das Grid selbst zu ändern, passen wir das Verhalten der Elemente an.
+// Dies ist ein optionaler Ansatz. Sie können diese Regeln entfernen, wenn Sie
+// lieber ein durchgehendes 16-Spalten-Raster bis zum mobilen Breakpoint haben möchten.
+@media (max-width: $ggs-breakpoint-tablet) {
+  // Beispiel: Ein Element, das auf dem Desktop 12 Spalten einnimmt,
+  // soll auf dem Tablet die volle Breite (16 Spalten) einnehmen.
+  // Fügen Sie hier nach Bedarf weitere solcher Regeln hinzu.
+  /*
+  .ggs-col-span-12 {
+    grid-column-end: span 16;
+  }
+  */
+}
+
+
+// --- Mobile Ansicht (1-Spalten-Layout) ---
+// Auf kleinen Bildschirmen wird das Grid aufgelöst und die Elemente
+// werden untereinander gestapelt.
+@media (max-width: $ggs-breakpoint-mobile) {
+  .ggs-container {
+    display: block; // Grid-Layout deaktivieren
+  }
+
+  .ggs-col {
+    // Grid-Eigenschaften zurücksetzen
+    grid-column-start: auto;
+    grid-column-end: auto;
+
+    // Einen vertikalen Abstand hinzufügen, wenn die Elemente gestapelt sind
+    &:not(:last-child) {
+      margin-bottom: var(--ggs-gutter-width);
+    }
+  }
+}```

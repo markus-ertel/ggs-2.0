@@ -1,19 +1,13 @@
-/* GGS-2.0 Configuration - Version 1.1 */
+/* GGS-2.0 Configuration */
 :root {
-  /* Die neue Variable, die NUR die Spaltenzahl enthält und von JS gelesen wird */
   --ggs-grid-columns: 18;
-  
-  --ggs-gutter-width: 1.5rem; /* 24px bei 16px Basisschriftgröße */
+  --ggs-gutter-width: 1.5rem;
   --ggs-overlay-color: rgba(255, 195, 0, 0.5);
-  
-  /* Interne Variablen, die nicht mehr von JS gelesen werden müssen */
-  --ggs-column-count: 16;
   --ggs-margin-columns: 1;
 }
 
 .ggs-container {
   display: grid;
-  /* Das Grid nutzt nun direkt die neue Variable */
   grid-template-columns: repeat(var(--ggs-grid-columns), 1fr);
   gap: var(--ggs-gutter-width);
   width: 100%;
@@ -42,7 +36,6 @@
 /* Für mittlere Bildschirme (Tablet): 8-Spalten-Logik */
 @media (max-width: 1024px) {
   :root {
-    /* Wichtig: Hier wird die Variable für JS und CSS aktualisiert */
     --ggs-grid-columns: 10; /* 8 Inhaltsspalten + 2 Ränder */
     --ggs-gutter-width: 1rem;
   }
@@ -53,12 +46,19 @@
 /* Für kleine Bildschirme (Mobile): 1-Spalten-Layout */
 @media (max-width: 640px) {
   :root {
-    /* Wichtig: Auf Mobilgeräten gibt es kein Grid */
-    --ggs-grid-columns: 0;
+    /*
+     * WICHTIGSTE ÄNDERUNG:
+     * Wir definieren 4 Spalten für das Overlay-Raster.
+     */
+    --ggs-grid-columns: 4;
+    --ggs-gutter-width: 1rem; /* Passender Abstand für Mobilgeräte */
   }
+
+  /* Der Inhaltscontainer selbst bleibt davon unberührt und stackt die Elemente. */
   .ggs-container {
     display: block;
   }
+  
   .ggs-col {
     grid-column-start: auto;
     grid-column-end: auto;

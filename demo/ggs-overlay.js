@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* Standard-Grid-Modus (Desktop/Tablet) */
     .ggs-overlay-grid-wrapper {
       display: grid;
-      grid-template-columns: repeat(var(--ggs-total-columns, 18), 1fr);
+      grid-template-columns: repeat(var(--ggs-grid-columns, 18), 1fr);
       gap: var(--ggs-gutter-width, 1.5rem);
       padding: 0 var(--ggs-gutter-width, 1.5rem);
       height: 100%;
@@ -96,38 +96,36 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentMode = ''; // Speichert den aktuellen Modus ('grid' oder 'mobile')
 
   const updateOverlay = () => {
-    const totalColsString = getComputedStyle(document.documentElement).getPropertyValue('--ggs-total-columns');
-    const newMode = totalColsString.trim() ? 'grid' : 'mobile';
+    const totalColsString = getComputedStyle(document.documentElement).getPropertyValue('--ggs-grid-columns');
 
-    if (newMode === currentMode) return; // Nichts tun, wenn sich der Modus nicht ändert
-    currentMode = newMode;
+    // Robustere Erkennung: Wenn wir auf Mobile sind (< 640px), erzwingen wir 4 Spalten.
+    const isMobile = window.matchMedia('(max-width: 640px)').matches;
+    // Tablet Erkennung: Zwischen Mobile und Desktop (< 1024px)
+    const isTablet = window.matchMedia('(max-width: 1024px)').matches;
+
+    const newMode = 'grid'; // Wir nutzen immer den Grid-Wrapper
 
     overlay.classList.remove('ggs-is-grid-mode', 'ggs-is-mobile-mode');
+    overlay.classList.add('ggs-is-grid-mode');
 
-    if (currentMode === 'grid') {
-      overlay.classList.add('ggs-is-grid-mode');
-      const gridWrapper = overlay.querySelector('.ggs-overlay-grid-wrapper');
-      const colCount = parseInt(totalColsString.trim());
-      
-      // Erstelle Spalten nur, wenn sie sich von der aktuellen Anzahl unterscheiden
-      if (gridWrapper.childElementCount !== colCount) {
-        gridWrapper.innerHTML = ''; // Leeren
-        for (let i = 0; i < colCount; i++) {
-          const col = document.createElement('div');
-          col.className = 'ggs-overlay-col';
-          gridWrapper.appendChild(col);
-        }
-      }
-    } else { // mobile mode
-      overlay.classList.add('ggs-is-mobile-mode');
-      const mobileWrapper = overlay.querySelector('.ggs-overlay-mobile-wrapper');
-      // Erstelle die 4 mobilen Spalten, falls sie noch nicht existieren
-      if (mobileWrapper.childElementCount === 0) {
-        for (let i = 0; i < 4; i++) {
-          const col = document.createElement('div');
-          col.className = 'ggs-overlay-col';
-          mobileWrapper.appendChild(col);
-        }
+    const gridWrapper = overlay.querySelector('.ggs-overlay-grid-wrapper');
+
+    // Default: Desktop (18 Spalten)
+    let colCount = 18;
+
+    if (isMobile) {
+      colCount = 4;
+    } else if (isTablet) {
+      colCount = 10;
+    }
+
+    // Erstelle Spalten nur, wenn sie sich von der aktuellen Anzahl unterscheiden
+    if (gridWrapper.childElementCount !== colCount) {
+      gridWrapper.innerHTML = ''; // Leeren
+      for (let i = 0; i < colCount; i++) {
+        const col = document.createElement('div');
+        col.className = 'ggs-overlay-col';
+        gridWrapper.appendChild(col);
       }
     }
   };

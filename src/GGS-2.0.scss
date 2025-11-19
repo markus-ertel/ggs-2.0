@@ -75,8 +75,9 @@ $ggs-total-tablet-cols: $ggs-tablet-content-cols + ($ggs-margin-cols * 2);  // -
 /* Kleine Bildschirme (Mobile) */
 @media (max-width: 640px) {
   :root {
-    // Auf Mobilgeräten gibt es kein Grid, daher 0 Spalten
-    --ggs-grid-columns: 0;
+    // WICHTIG: Wir definieren 4 Spalten für das Overlay-Raster (auch wenn display: block aktiv ist)
+    --ggs-grid-columns: 4;
+    --ggs-gutter-width: 1rem;
   }
 
   .ggs-container {
